@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hostel_management/features/auth/screens/login_screen.dart';
+import 'package:hostel_management/features/home/screens/home_screen.dart';
 import 'package:hostel_management/theme/colors.dart';
 import 'package:hostel_management/theme/text_theme.dart';
 import 'package:hostel_management/widgets/custom_button.dart';
 import 'package:get/get.dart';
 import '../../../common/assets_path.dart';
 import '../../../common/custom_text_field.dart';
+import 'package:lottie/lottie.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -19,14 +21,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController userNameController = TextEditingController();
-  TextEditingController firsNameController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
+  String? selectedBlock;
+  String? selectedRoom;
+  List<String> blockOptions = ['A', 'B'];
+  List<String> roomOptionsA = ['101', '102', '103'];
+  List<String> roomOptionsB = ['201', '202', '203'];
 
   @override
   void dispose() {
     emailController.dispose;
     passwordController.dispose;
+    userNameController.dispose;
+    firstNameController.dispose;
+    lastNameController.dispose;
+    phoneNumberController.dispose;
     super.dispose();
   }
 
@@ -44,11 +55,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
               children: [
                 const SizedBox(height: 40,),
                 Center(
-                  child: Image.asset(
-                    ImagePaths.hostelPath,
-                    height: 100,
-                    width: 100,
-                  ),
+                    child: Lottie.asset(
+                        LottiePath.home,
+                        width: 150,
+                        height: 150
+                    )
                 ),
                 const SizedBox(height: 15,),
                 const Center(
@@ -88,7 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   style: AppTextTheme.labelStyle,
                 ),
                 CustomTextField(
-                  controller: firsNameController,
+                  controller: firstNameController,
                   enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: AppColors.greyDk),
                       borderRadius: BorderRadius.circular(15)
@@ -181,14 +192,98 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     return null;
                   },
                 ),
-                // Register Button.
                 const SizedBox(height: 7,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: 50,
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                            width: 1,
+                            color: AppColors.greenColor
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        )
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 20,),
+                          Text(
+                              "Block No.",
+                            style: AppTextTheme.labelStyle,
+                          ),
+                          const SizedBox(width: 10,),
+                          DropdownButton(
+                            value: selectedBlock,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedBlock = newValue;
+                                selectedRoom = null;
+                              });
+                            },
+                            items: blockOptions.map((String block) {
+                              return DropdownMenuItem(
+                                  value: block,
+                                  child: Text(block)
+                              );
+                            }).toList(),
+                          ),
+                          const SizedBox(width: 10 ,)
+
+                        ],
+                      ),
+                    ),
+                    Container(
+                      height: 50,
+                      decoration: ShapeDecoration(
+                        shape: RoundedRectangleBorder(
+                          side: const BorderSide(
+                            width: 1,
+                            color: AppColors.greenColor
+                          ),
+                          borderRadius: BorderRadius.circular(15),
+                        )
+                      ),
+                      child: Row(
+                        children: [
+                          const SizedBox(width: 20,),
+                          Text(
+                              "Room No.",
+                            style: AppTextTheme.labelStyle,
+                          ),
+                          const SizedBox(width: 10,),
+                          DropdownButton(
+                            value: selectedRoom,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                selectedRoom = newValue;
+                              });
+                            },
+                            items:(selectedBlock=='A'? roomOptionsA: roomOptionsB)
+                              .map((String block) {
+                                return DropdownMenuItem(
+                                  value: block,
+                                  child: Text(block),
+                                );
+                            }).toList(),
+                          ),
+                          const SizedBox(width: 10,)
+
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                // Register Button.
+                const SizedBox(height: 25,),
                 CustomButton(
                     buttonText: "Register",
                     buttonColor: AppColors.light,
                     onTap: () {
                       if(formKey.currentState!.validate()) {
-
+                        Get.to(const HomeScreen());
                       }
                     }
                 ),

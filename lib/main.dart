@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hostel_management/features/auth/screens/login_screen.dart';
 import 'package:get/get.dart';
+import 'package:hostel_management/features/home/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,9 +19,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      // home: const LoginScreen(),
+      home: const HomeScreen()
     );
   }
 }
 
 // 38:00 -- 15/07
+// 01:48 -- 17/07

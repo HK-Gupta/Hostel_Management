@@ -4,9 +4,11 @@ import 'package:flutter/painting.dart';
 import 'package:hostel_management/common/assets_path.dart';
 import 'package:hostel_management/common/custom_text_field.dart';
 import 'package:hostel_management/features/auth/screens/register_screen.dart';
+import 'package:hostel_management/features/home/screens/home_screen.dart';
 import 'package:hostel_management/theme/colors.dart';
 import 'package:hostel_management/theme/text_theme.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../../widgets/custom_button.dart';
 
@@ -42,11 +44,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Center(
-                    child: Image.asset(
-                        ImagePaths.hostelPath,
-                      height: 250,
-                      width: 200,
-                    ),
+                    child: Lottie.asset(
+                      LottiePath.home,
+                      width: 250,
+                      height: 200
+                    )
                   ),
                   const SizedBox(height: 25,),
                   const Center(
@@ -103,7 +105,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     buttonColor: AppColors.light,
                     onTap: () {
                         if(formKey.currentState!.validate()) {
-                          print("Validated");
+                          Get.to(const HomeScreen());
                         }
                     },
                   ),
