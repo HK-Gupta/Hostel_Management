@@ -36,7 +36,7 @@ class AppTextTheme {
   static TextStyle socialTextStyle = GoogleFonts.inter(
     color: AppColors.primaryColor,
     fontWeight: FontWeight.w500,
-    fontSize: 17,
+    fontSize: 18,
   );
 
   static TextStyle dmTextStyle = GoogleFonts.inter(

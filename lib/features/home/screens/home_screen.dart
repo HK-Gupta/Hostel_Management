@@ -2,8 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hostel_management/common/app_bar.dart';
 import 'package:hostel_management/common/assets_path.dart';
+import 'package:hostel_management/features/admin/all_issues_screen.dart';
 import 'package:hostel_management/features/admin/create_staff_screen.dart';
+import 'package:hostel_management/features/admin/room_change_request_screen.dart';
+import 'package:hostel_management/features/admin/staff_display_screen.dart';
 import 'package:hostel_management/features/students/create_issue_screen.dart';
+import 'package:hostel_management/features/students/hostel_fees_screen.dart';
+import 'package:hostel_management/features/students/room_available_screen.dart';
 import 'package:hostel_management/theme/colors.dart';
 import 'package:hostel_management/widgets/category_card.dart';
 import 'package:get/get.dart';
@@ -90,16 +95,21 @@ class _HomeScreenState extends State<HomeScreen> {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.all(15),
-                            decoration: BoxDecoration(
-                              color: AppColors.greenColor,
-                              borderRadius: BorderRadius.circular(100)
-                            ),
-                            child: const Icon(
-                                Icons.note_add,
-                              color: Colors.white,
-                              size: 35,
+                          InkWell(
+                            onTap: () {
+                              Get.to(const CreateIssueScreen());
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                color: AppColors.greenColor,
+                                borderRadius: BorderRadius.circular(100)
+                              ),
+                              child: const Icon(
+                                  Icons.note_add,
+                                color: Colors.white,
+                                size: 35,
+                              ),
                             ),
                           ),
                           const Text(
@@ -141,19 +151,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         CategoryCard(
                             category: 'Room\nAvailability',
                             image: ImagePaths.roomAvailable,
-                          onTap: () {},
+                          onTap: () {
+                              Get.to(const RoomAvailableScreen());
+                          },
                         ),
                         CategoryCard(
                             category: 'All\nIssue',
                             image: ImagePaths.allIssues,
                           onTap: () {
-                              Get.to(const CreateIssueScreen());
+                              Get.to(const AllIssuesScreen());
                           },
                         ),
                         CategoryCard(
                             category: 'Staff\nMembers',
                             image: ImagePaths.staffMembers,
-                          onTap: () {},
+                          onTap: () {
+                              Get.to(const StaffDisplayScreen());
+                          },
                         ),
                       ],
                     ),
@@ -171,12 +185,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         CategoryCard(
                             category: 'Hostel\nFees',
                             image: ImagePaths.hostelFees,
-                          onTap: () {},
+                          onTap: () {
+                              Get.to(const HostelFeesScreen());
+                          },
                         ),
                         CategoryCard(
                             category: 'Change\nRequests',
                             image: ImagePaths.changeRequest,
-                          onTap: () {},
+                          onTap: () {
+                              Get.to(const RoomChangeRequestScreen());
+                          },
                         ),
                       ],
                     ),

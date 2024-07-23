@@ -35,7 +35,8 @@ class CategoryCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            SizedBox(
+            Container(
+              padding: const EdgeInsets.all(10),
               height: 70,
               width: 70,
               child: Image.asset(image),
