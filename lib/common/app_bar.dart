@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hostel_management/common/assets_path.dart';
+import 'package:hostel_management/features/students/profile_screen.dart';
 import 'package:hostel_management/theme/colors.dart';
 import 'package:hostel_management/theme/text_theme.dart';
+import 'package:get/get.dart';
 
 AppBar buildAppBar(BuildContext context, String? title, bool isAvatar) {
   return AppBar(
@@ -8,7 +12,9 @@ AppBar buildAppBar(BuildContext context, String? title, bool isAvatar) {
     centerTitle: false,
     leading: InkWell(
       onTap: () {
-        Navigator.pop(context);
+        if(!isAvatar) {
+          Navigator.pop(context);
+        }
       },
       child: isAvatar ?
         const Icon(
@@ -31,15 +37,19 @@ AppBar buildAppBar(BuildContext context, String? title, bool isAvatar) {
     ),
     actions: [
       isAvatar?
-      const Row(
-        children: [
-          Icon(
-            Icons.perm_identity_rounded,
-            size: 40,
-            color: Colors.white,
-          ),
-          SizedBox(width: 10,)
-        ],
+      InkWell(
+        onTap: () {
+          Get.to(const ProfileScreen());
+        },
+        child: Row(
+          children: [
+            Image.asset(
+              ImagePaths.person,
+              width: 40,
+            ),
+            SizedBox(width: 10,)
+          ],
+        ),
       ): const SizedBox()
     ],
   );

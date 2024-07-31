@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hostel_management/api_services/api_calls.dart';
 import 'package:hostel_management/common/app_bar.dart';
 
 import '../../common/assets_path.dart';
@@ -25,6 +26,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
   TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController jobRoleController = TextEditingController();
+  ApiCalls apiCalls = ApiCalls();
 
   @override
   void dispose() {
@@ -164,6 +166,8 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
                 validator: (value) {
                   if(value!.isEmpty) {
                     return 'Email is required';
+                  } else if(!emailRegex.hasMatch(value)) {
+                    return 'Enter a valid Email';
                   }
                   return null;
                 },
@@ -195,7 +199,16 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
                   buttonColor: AppColors.light,
                   onTap: () {
                     if(formKey.currentState!.validate()) {
-                      Get.to(const HomeScreen());
+                      apiCalls.createStaff(
+                        context,
+                        userNameController.text,
+                        firstNameController.text,
+                        lastNameController.text,
+                        jobRoleController.text,
+                        phoneNumberController.text,
+                        emailController.text,
+                        passwordController.text
+                      );
                     }
                   }
               ),
@@ -206,4 +219,7 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
       ),
     );
   }
+
+
+  final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$');
 }

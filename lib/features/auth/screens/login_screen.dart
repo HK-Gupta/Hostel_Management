@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
+import 'package:hostel_management/api_services/api_calls.dart';
 import 'package:hostel_management/common/assets_path.dart';
 import 'package:hostel_management/common/custom_text_field.dart';
 import 'package:hostel_management/features/auth/screens/register_screen.dart';
@@ -23,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   static final formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  ApiCalls apiCalls = ApiCalls();
 
   @override
   void dispose() {
@@ -105,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     buttonColor: AppColors.light,
                     onTap: () {
                         if(formKey.currentState!.validate()) {
-                          Get.to(const HomeScreen());
+                          apiCalls.handleLogin(context, emailController.text, passwordController.text);
                         }
                     },
                   ),

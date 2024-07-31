@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hostel_management/api_services/api_utils.dart';
 import 'package:hostel_management/common/app_bar.dart';
 import 'package:hostel_management/common/assets_path.dart';
 import 'package:hostel_management/features/admin/all_issues_screen.dart';
@@ -63,29 +64,35 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Column(
+                      const SizedBox(width: 7,),
+                      Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(
-                            "Harsh Kumar",
-                            style: TextStyle(
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFF333333),
-                              fontSize: 24
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width/2,
+                            child: Text(
+                              "${ApiUtils.firstName} ${ApiUtils.lastName}",
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w700,
+                                color: Color(0xFF333333),
+                                fontSize: 24
+                              ),
                             ),
                           ),
-                          SizedBox(height: 15,),
+                          const SizedBox(height: 15,),
                           Text(
-                            "Room No.: 123",
-                            style: TextStyle(
+                            "Room No.: ${ApiUtils.roomNo}",
+                            style: const TextStyle(
                                 color:  Color(0xFF333333),
                                 fontSize: 16
                             ),
                           ),
                           Text(
-                            "Block No.: A",
-                            style: TextStyle(
+                            "Block No.: ${ApiUtils.blockNo}",
+                            style: const TextStyle(
                               color:  Color(0xFF333333),
                               fontSize: 16
                             ),
@@ -120,7 +127,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           )
                         ],
-                      )
+                      ),
+                      const SizedBox(width: 2,),
                     ]
                   ),
                 )

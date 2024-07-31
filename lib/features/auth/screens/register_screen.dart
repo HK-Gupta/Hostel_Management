@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hostel_management/api_services/api_calls.dart';
 import 'package:hostel_management/features/auth/screens/login_screen.dart';
 import 'package:hostel_management/features/home/screens/home_screen.dart';
 import 'package:hostel_management/theme/colors.dart';
@@ -27,8 +28,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? selectedBlock;
   String? selectedRoom;
   List<String> blockOptions = ['A', 'B'];
-  List<String> roomOptionsA = ['101', '102', '103'];
-  List<String> roomOptionsB = ['201', '202', '203'];
+  List<String> roomOptionsA = ['101', '102', '103', '104', '105'];
+  List<String> roomOptionsB = ['201', '202', '203', '204', '205'];
+  ApiCalls apiCalls = ApiCalls();
+
 
   @override
   void dispose() {
@@ -43,6 +46,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
@@ -168,6 +172,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   validator: (value) {
                     if(value!.isEmpty) {
                       return 'Email is required';
+                    } else if(!emailRegex.hasMatch(value)) {
+                      return 'Enter a valid Email';
                     }
                     return null;
                   },
@@ -283,7 +289,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     buttonColor: AppColors.light,
                     onTap: () {
                       if(formKey.currentState!.validate()) {
-                        Get.to(const HomeScreen());
+                        apiCalls.registerStudent(
+                          context,
+                          userNameController.text,
+                          firstNameController.text,
+                          lastNameController.text,
+                          phoneNumberController.text,
+                          emailController.text,
+                          passwordController.text,
+                          selectedBlock??"",
+                          selectedRoom??""
+                        );
                       }
                     }
                 ),
@@ -316,4 +332,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
       ),
     );
   }
+
+  final emailRegex = RegExp(r'^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)*(\.[a-z]{2,})$');
 }

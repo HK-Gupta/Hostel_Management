@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
+import 'package:hostel_management/api_services/api_calls.dart';
+import 'package:hostel_management/api_services/api_utils.dart';
 import 'package:hostel_management/common/app_bar.dart';
 import 'package:hostel_management/common/custom_text_field.dart';
 import 'package:hostel_management/theme/colors.dart';
@@ -18,7 +20,7 @@ class CreateIssueScreen extends StatefulWidget {
 
 class _CreateIssueScreenState extends State<CreateIssueScreen> {
   TextEditingController commentController = TextEditingController();
-
+  ApiCalls apiCalls = ApiCalls();
   String? selectedIssue;
   List<String> allIssues = [
     "Bedroom",
@@ -51,19 +53,19 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
               children: [
                 // Room
                 Text("Room Number", style: AppTextTheme.labelStyle,),
-                const CustomText(text: "101"),
+                 CustomText(text: ApiUtils.roomNo),
                 // Block
                 const SizedBox(height: 15,),
                 Text("Block Number", style: AppTextTheme.labelStyle,),
-                const CustomText(text: "B"),
+                CustomText(text: ApiUtils.blockNo),
                 // Email ID
                 const SizedBox(height: 15,),
                 Text("Your Email Id", style: AppTextTheme.labelStyle,),
-                const CustomText(text: "abc@gmail.com"),
+                CustomText(text: ApiUtils.email),
                 // Phone Number
                 const SizedBox(height: 15,),
                 Text("Phone Number", style: AppTextTheme.labelStyle,),
-                const CustomText(text: "0123456789"),
+                CustomText(text: ApiUtils.phoneNo),
                 // Facing Issue
                 const SizedBox(height: 15,),
                 Text("Issue you are Facing", style: AppTextTheme.labelStyle,),
@@ -121,7 +123,15 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
                 CustomButton(
                     buttonText: "Submit",
                     onTap: () {
-
+                      apiCalls.createIssues(
+                        context,
+                        ApiUtils.roomNo,
+                        ApiUtils.blockNo,
+                        ApiUtils.email,
+                        ApiUtils.phoneNo,
+                        selectedIssue?? "",
+                        commentController.text
+                      );
                     }
                 )
               ],
