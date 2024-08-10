@@ -51,6 +51,7 @@ dev_dependencies:
   lottie: ^3.1.2
   http: ^1.2.2
   provider: ^6.1.2
+  shared_preferences: ^2.3.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

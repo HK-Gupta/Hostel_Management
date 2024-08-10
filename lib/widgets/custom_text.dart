@@ -4,8 +4,9 @@ import '../theme/colors.dart';
 import '../theme/text_theme.dart';
 
 class CustomText extends StatelessWidget {
-  String text;
-  CustomText({super.key, required this.text});
+
+  final String text;
+  const CustomText({super.key, required this.text});
 
   @override
   Widget build(BuildContext context) {

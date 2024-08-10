@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:hostel_management/api_services/api_calls.dart';
 import 'package:hostel_management/api_services/api_utils.dart';
 import 'package:hostel_management/common/app_bar.dart';
 import 'package:hostel_management/common/assets_path.dart';
@@ -22,6 +23,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    ApiUtils.loadUserDetails();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

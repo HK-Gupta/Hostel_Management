@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hostel_management/api_services/api_calls.dart';
+import 'package:hostel_management/api_services/api_utils.dart';
 import 'package:hostel_management/common/app_bar.dart';
 
 import '../../common/assets_path.dart';
@@ -43,7 +44,18 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context, "Create Staff", false),
-      body: Form(
+      body: ApiUtils.authority!='0'?
+      Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "You Don't have permission to view this page",
+            style: AppTextTheme.socialTextStyle,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ):
+      Form(
         key: formKey,
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),

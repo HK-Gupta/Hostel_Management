@@ -53,7 +53,7 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
               children: [
                 // Room
                 Text("Room Number", style: AppTextTheme.labelStyle,),
-                 CustomText(text: ApiUtils.roomNo),
+                CustomText(text: ApiUtils.roomNo),
                 // Block
                 const SizedBox(height: 15,),
                 Text("Block Number", style: AppTextTheme.labelStyle,),
@@ -127,6 +127,9 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
                         context,
                         ApiUtils.roomNo,
                         ApiUtils.blockNo,
+                        ApiUtils.userName,
+                        ApiUtils.firstName,
+                        ApiUtils.lastName,
                         ApiUtils.email,
                         ApiUtils.phoneNo,
                         selectedIssue?? "",

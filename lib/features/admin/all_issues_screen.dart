@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hostel_management/api_services/api_calls.dart';
 import 'package:hostel_management/common/app_bar.dart';
 import 'package:hostel_management/common/assets_path.dart';
+import 'package:hostel_management/models/IssueModel.dart';
 import 'package:hostel_management/theme/text_theme.dart';
+import 'package:provider/provider.dart';
+
+import '../../api_services/api_provider.dart';
+import '../../api_services/api_utils.dart';
 
 class AllIssuesScreen extends StatefulWidget {
   const AllIssuesScreen({super.key});
@@ -11,22 +17,74 @@ class AllIssuesScreen extends StatefulWidget {
 }
 
 class _AllIssuesScreenState extends State<AllIssuesScreen> {
+
+  List<IssueModel>? issueModel;
+
+  Future<void> fetchIssues() async {
+    try {
+      final apiProvider = Provider.of<ApiProvider>(context, listen: false);
+      final totalIssues = await apiProvider.getResponse(ApiUtils.createIssues);
+
+      if(totalIssues.statusCode== 200) {
+        issueModel = issueModelFromJson(totalIssues.body);
+      }
+    } catch(e) {
+      print("Error: $e");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(context, "All Issues", false),
-      body: ListView.builder(
-        itemCount: 4,
-          itemBuilder:(context, index) {
-            return const IssueCard();
+      body: ApiUtils.authority != '0'
+          ? Center(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Text(
+            "You Don't have permission to view this page",
+            style: AppTextTheme.socialTextStyle,
+            textAlign: TextAlign.center,
+          ),
+        ),
+      ):
+      FutureBuilder(
+        future: fetchIssues(),
+        builder: (context, snapshot) {
+          if(snapshot.hasError) {
+            return Center(
+                child: Text("Error; ${snapshot.error}", style: AppTextTheme.appBarStyle,)
+            );
+          } else if(snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return issueModel == null ?
+                Center(child: Text("No Issues", style: AppTextTheme.appBarStyle,),) :
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+                  child: ListView.builder(
+                    itemCount: issueModel!.length,
+                    itemBuilder:(context, index) {
+                      return IssueCard(
+                        issue: issueModel![index],
+                      );
+                    }
+                  ),
+                );
+
           }
+        },
+
       ),
     );
   }
 }
 
 class IssueCard  extends StatelessWidget {
-  const IssueCard ({super.key});
+  final IssueModel issue;
+  const IssueCard ({super.key, required this.issue});
 
   @override
   Widget build(BuildContext context) {
@@ -65,7 +123,7 @@ class IssueCard  extends StatelessWidget {
                     ),
                     const SizedBox(height: 10,),
                     Text(
-                      "User Name",
+                      "${issue.firstName} ${issue.lastName}",
                       style: AppTextTheme.socialTextStyle.copyWith(
                         fontWeight: FontWeight.bold
                       ),
@@ -78,104 +136,106 @@ class IssueCard  extends StatelessWidget {
                   children: [
                     const SizedBox(height: 10,),
                     Text(
-                      "User Name: Xyz",
+                      "User Name: ${issue.userName}",
                       style: AppTextTheme.primaryStyle
                       ),
                     const SizedBox(height: 10,),
                     Text(
-                        "Room Number: 201",
+                        "Room Number: ${issue.roomNumber}",
                         style: AppTextTheme.primaryStyle
                     ),
                     const SizedBox(height: 10,),
                     Text(
-                        "Email: abc@gmail.com",
+                        "Email: ${issue.email}",
                         style: AppTextTheme.primaryStyle
                     ),
                     const SizedBox(height: 10,),
                     Text(
-                        "Phone No.: 1234567890",
+                        "Phone No.: ${issue.phoneNo}",
                         style: AppTextTheme.primaryStyle
                     ),
-                    const SizedBox(height: 10,)
                   ],
                 )
               ],
             )
           ),
           Container(
-            height: 150,
             padding: const EdgeInsets.symmetric(vertical: 10),
             child: Column(
               children: [
-                Expanded(
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
-                    child: Column(
-                      children: [
-                      Column(
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  child: Column(
+                    children: [
+                      Row(
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                "Issue: ",
-                                style: AppTextTheme.socialTextStyle.copyWith(
-                                    fontWeight: FontWeight.w700
-                                ),
-                              ),
-                              Text(
-                                "Bathroom",
-                                style: AppTextTheme.labelStyle,
-                              )
-                            ],
+                          Text(
+                            "Issue: ",
+                            style: AppTextTheme.socialTextStyle.copyWith(
+                                fontWeight: FontWeight.w700
+                            ),
                           ),
-                          const SizedBox(height: 4,),
-                          Row(
-                            children: [
-                              Text(
-                                "Student Comment: ",
-                                style: AppTextTheme.socialTextStyle.copyWith(
-                                    fontWeight: FontWeight.w700
-                                ),
-                              ),
-                              Text(
-                                "'Leakage'",
-                                style: AppTextTheme.labelStyle,
-                              )
-                            ],
-                          ),
-                          const SizedBox(height: 20,),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                onTap: () {
-
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  width: MediaQuery.of(context).size.width/2.5,
-                                  decoration: BoxDecoration(
-                                      color: Colors.blue[400],
-                                      borderRadius: BorderRadius.circular(10)
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "Resolved",
-                                        style: AppTextTheme.labelStyle.copyWith(color: Colors.white),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ],
+                          Text(
+                            issue.issue.toString(),
+                            style: AppTextTheme.labelStyle,
                           )
+                        ],
+                      ),
+                      const SizedBox(height: 4,),
+                      Row(
+                        children: [
+                          Text(
+                            "Student Comment: ",
+                            style: AppTextTheme.socialTextStyle.copyWith(
+                                fontWeight: FontWeight.w700
+                            ),
+                          ),
+                          Text(
+                            "'${issue.comment}'",
+                            style: AppTextTheme.labelStyle,
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 20,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          InkWell(
+                            onTap: () {
+
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              width: MediaQuery.of(context).size.width/2.5,
+                              decoration: BoxDecoration(
+                                  color: Colors.blue[400],
+                                  borderRadius: BorderRadius.circular(10)
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      ApiCalls().deleteFromDatabase(
+                                          context,
+                                          ApiUtils.createIssues,
+                                          issue.id.toString(),
+                                          "Issue Resolved"
+                                      );
+                                    },
+                                    child: Text(
+                                      "Resolved",
+                                      style: AppTextTheme.labelStyle.copyWith(color: Colors.white),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
                         ],
                       )
                     ],
-                    ),
                   ),
                 )
               ],
