@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hostel_management/api_services/api_provider.dart';
 import 'package:hostel_management/api_services/api_utils.dart';
+import 'package:hostel_management/auth_controller.dart';
+import 'package:hostel_management/features/auth/screens/otp_screen.dart';
+import 'package:hostel_management/features/auth/screens/register_screen.dart';
 import 'package:hostel_management/features/students/room_change_form_screen.dart';
+import 'package:hostel_management/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'features/auth/screens/login_screen.dart';
 import 'package:http/http.dart' as http;
@@ -34,8 +38,8 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        // home: const RoomChangeFormScreen(),
-        home: const HomeScreen()
+        // home:  const  OtpScreen(email: "temp",),
+        home: SplashScreen()
       ),
     );
   }

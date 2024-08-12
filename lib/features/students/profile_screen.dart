@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hostel_management/api_services/api_calls.dart';
 import 'package:hostel_management/api_services/api_utils.dart';
 import 'package:hostel_management/common/custom_text_field.dart';
 import 'package:hostel_management/common/my_form_field.dart';
@@ -51,6 +52,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         actions: [
           InkWell(
             onTap: () {
+              ApiCalls().handleLogout(context);
               Get.to(const LoginScreen());
             },
             child: Container(
