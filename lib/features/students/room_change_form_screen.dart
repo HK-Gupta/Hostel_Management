@@ -20,7 +20,25 @@ class RoomChangeFormScreen extends StatefulWidget {
 class _RoomChangeFormScreenState extends State<RoomChangeFormScreen> {
   TextEditingController reasonController = TextEditingController();
   static final formKey = GlobalKey<FormState>();
+
   bool isLoading = false;
+  Future<void> createRoomChangeRequest() async {
+    setState(() {
+      isLoading = true;
+    });
+    await ApiCalls().createRoomChangeRequest(
+        context,
+        ApiUtils.roomNo,
+        widget.requestedRoom,
+        ApiUtils.blockNo,
+        widget.requestedBlock,
+        ApiUtils.email,
+        reasonController.text
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   void dispose() {
@@ -68,27 +86,12 @@ class _RoomChangeFormScreenState extends State<RoomChangeFormScreen> {
                 },
               ),
               const SizedBox(height: 50,),
-              isLoading?
-              const CircularProgressIndicator():
+              isLoading? const Center(child: CircularProgressIndicator()):
               CustomButton(
                   buttonText: "Submit Request",
                   onTap: () {
                     if(formKey.currentState!.validate()) {
-                      setState(() {
-                        isLoading = true;
-                      });
-                      ApiCalls().createRoomChangeRequest(
-                          context,
-                          ApiUtils.roomNo,
-                          widget.requestedRoom,
-                          ApiUtils.blockNo,
-                          widget.requestedBlock,
-                          ApiUtils.email,
-                          reasonController.text
-                      );
-                      setState(() {
-                        isLoading = false;
-                      });
+                      createRoomChangeRequest();
                     }
                   }
               )

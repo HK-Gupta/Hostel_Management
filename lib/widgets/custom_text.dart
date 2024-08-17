@@ -18,7 +18,7 @@ class CustomText extends StatelessWidget {
         shape: RoundedRectangleBorder(
           side: const BorderSide(
             width: 1,
-            color: AppColors.greenColor,
+            color: AppColors.primaryColor,
           ),
           borderRadius: BorderRadius.circular(14),
         ),

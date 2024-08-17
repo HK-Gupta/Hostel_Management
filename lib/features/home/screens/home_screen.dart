@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   shape: RoundedRectangleBorder(
                     side: BorderSide(
                       width: 2,
-                      color:  AppColors.greenColor
+                      color:  AppColors.primaryColor
                     ),
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
@@ -115,7 +115,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Container(
                               padding: const EdgeInsets.all(15),
                               decoration: BoxDecoration(
-                                color: AppColors.greenColor,
+                                color: AppColors.buttonColor,
                                 borderRadius: BorderRadius.circular(100)
                               ),
                               child: const Icon(
@@ -143,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(15),
-                  color: const Color(0xFF262E8b57),
+                  color: AppColors.formLabelColor.withOpacity(0.4),
                 ),
                 padding: const EdgeInsets.all(15),
                 width: MediaQuery.of(context).size.width,
@@ -155,7 +155,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 20,
-                        color: Color(0xFF333333)
+                        color: Color(0xFF232333)
                       ),
                     ),
                     const SizedBox(height: 15,),

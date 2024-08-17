@@ -31,6 +31,27 @@ class _RegisterScreenState extends State<RegisterScreen> {
   List<String> roomOptionsA = ['101', '102', '103', '104', '105'];
   List<String> roomOptionsB = ['201', '202', '203', '204', '205'];
   ApiCalls apiCalls = ApiCalls();
+  bool isLoading = false;
+
+  Future<void> signup() async {
+    setState(() {
+      isLoading = true;
+    });
+    await apiCalls.registerStudent(
+        context,
+        userNameController.text,
+        firstNameController.text,
+        lastNameController.text,
+        phoneNumberController.text,
+        emailController.text,
+        passwordController.text,
+        selectedBlock??"",
+        selectedRoom??""
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
 
 
   @override
@@ -48,7 +69,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
         child: Form(
           key: formKey,
@@ -284,22 +304,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
                 // Register Button.
                 const SizedBox(height: 25,),
+                isLoading? const Center(child: CircularProgressIndicator(),):
                 CustomButton(
                     buttonText: "Register",
                     buttonColor: AppColors.light,
                     onTap: () {
                       if(formKey.currentState!.validate()) {
-                        apiCalls.registerStudent(
-                          context,
-                          userNameController.text,
-                          firstNameController.text,
-                          lastNameController.text,
-                          phoneNumberController.text,
-                          emailController.text,
-                          passwordController.text,
-                          selectedBlock??"",
-                          selectedRoom??""
-                        );
+                        signup();
                       }
                     }
                 ),
@@ -313,7 +324,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     InkWell(
                       onTap: () {
-                        Get.to(const LoginScreen());
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const LoginScreen()));
                       },
                       child: Text(
                         "Click to Login",

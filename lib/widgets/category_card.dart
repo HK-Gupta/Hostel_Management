@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hostel_management/common/assets_path.dart';
+import 'package:hostel_management/theme/colors.dart';
 import 'package:hostel_management/theme/text_theme.dart';
 
 class CategoryCard extends StatelessWidget {
@@ -26,7 +27,7 @@ class CategoryCard extends StatelessWidget {
           ),
           shadows: [
             BoxShadow(
-              color: Color(0x7F2E8B57),
+              color: AppColors.formLabelColor,
               blurRadius: 4,
               offset: Offset(1, 4),
               spreadRadius: 0

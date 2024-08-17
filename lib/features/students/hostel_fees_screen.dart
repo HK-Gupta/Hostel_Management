@@ -59,6 +59,7 @@ class _HostelFeesScreenState extends State<HostelFeesScreen> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  const SizedBox(height: 20,),
                   Image.asset(
                     ImagePaths.hostelPath,
                     width: w/2.1,
@@ -71,10 +72,10 @@ class _HostelFeesScreenState extends State<HostelFeesScreen> {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           border: Border.all(
-                              color: AppColors.greenColor,
+                              color: AppColors.formLabelColor,
                               width: 2
                           ),
-                          color: Colors.greenAccent[100]
+                          color: AppColors.lightBlue.withOpacity(0.5)
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,

@@ -33,6 +33,29 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
   ];
   static final formKey = GlobalKey<FormState>();
 
+  bool isLoading = false;
+  Future<void> createIssue() async {
+    setState(() {
+      isLoading = true;
+    });
+    await apiCalls.createIssues(
+        context,
+        ApiUtils.roomNo,
+        ApiUtils.blockNo,
+        ApiUtils.userName,
+        ApiUtils.firstName,
+        ApiUtils.lastName,
+        ApiUtils.email,
+        ApiUtils.phoneNo,
+        selectedIssue?? "",
+        commentController.text
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+
   @override
   void dispose() {
     super.dispose();
@@ -77,7 +100,7 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
                     shape: RoundedRectangleBorder(
                       side: const BorderSide(
                         width: 1,
-                        color: AppColors.greenColor,
+                        color: AppColors.primaryColor,
                       ),
                       borderRadius: BorderRadius.circular(14),
                     ),
@@ -120,21 +143,11 @@ class _CreateIssueScreenState extends State<CreateIssueScreen> {
                   ),
                 ),
                 const SizedBox(height: 40,),
+                isLoading? const Center(child: CircularProgressIndicator()):
                 CustomButton(
                     buttonText: "Submit",
                     onTap: () {
-                      apiCalls.createIssues(
-                        context,
-                        ApiUtils.roomNo,
-                        ApiUtils.blockNo,
-                        ApiUtils.userName,
-                        ApiUtils.firstName,
-                        ApiUtils.lastName,
-                        ApiUtils.email,
-                        ApiUtils.phoneNo,
-                        selectedIssue?? "",
-                        commentController.text
-                      );
+                      createIssue();
                     }
                 )
               ],

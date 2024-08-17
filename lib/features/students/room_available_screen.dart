@@ -88,7 +88,7 @@ class RoomCard extends StatelessWidget {
           bottomLeft: Radius.circular(30),
         ),
         border: Border.all(
-          color: AppColors.greenColor,
+          color: AppColors.primaryColor,
           width: 2,
         ),
       ),

@@ -19,6 +19,17 @@ class _OtpScreenState extends State<OtpScreen> {
   final List<FocusNode> focusNodes = List.generate(6, (_) => FocusNode());
   final List<bool> isValid = List.generate(6, (_) => true);
 
+  bool isLoading = false;
+  Future<void> otpCheck(String otp) async {
+    setState(() {
+      isLoading = true;
+    });
+    await ApiCalls().verifyOtp(context, widget.email, otp);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void dispose() {
     for (var controller in controllers) {
@@ -64,12 +75,13 @@ class _OtpScreenState extends State<OtpScreen> {
                 }),
               ),
               const SizedBox(height: 50),
+              isLoading? const Center(child: CircularProgressIndicator()):
               CustomButton(
                 buttonText: "Continue",
                 onTap: () {
                   if (formKey.currentState!.validate()) {
                     String otp = controllers.map((c) => c.text).join();
-                    ApiCalls().verifyOtp(context, widget.email, otp);
+                    otpCheck(otp);
                   }
                 },
               ),

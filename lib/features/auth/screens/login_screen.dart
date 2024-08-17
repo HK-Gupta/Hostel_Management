@@ -25,6 +25,17 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   ApiCalls apiCalls = ApiCalls();
+  bool isLoading = false;
+
+  Future<void> login() async {
+    setState(() {
+      isLoading = true;
+    });
+    await apiCalls.handleLogin(context, emailController.text, passwordController.text);
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   void dispose() {
@@ -103,12 +114,13 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const SizedBox(height: 40,),
+                  isLoading ? const Center(child: CircularProgressIndicator()) :
                   CustomButton(
                       buttonText: "Login",
                     buttonColor: AppColors.light,
                     onTap: () {
                         if(formKey.currentState!.validate()) {
-                          apiCalls.handleLogin(context, emailController.text, passwordController.text);
+                            login();
                         }
                     },
                   ),
@@ -122,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       InkWell(
                         onTap: () {
-                          Get.to(const RegisterScreen());
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const RegisterScreen()));
                         },
                         child: Text(
                             "Click to Register",

@@ -29,7 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final w = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppColors.greenColor,
+        backgroundColor: AppColors.appBarColor,
         centerTitle: false,
         title: Text(
           "Profile",
@@ -89,66 +89,68 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ],
             )
-            : Column(
-              children: [
-                Center(
-                  child: Image.asset(
-                    ImagePaths.person,
-                    width: w/2.8,
-                  ),
-                ),
-                const SizedBox(height: 10,),
-                Text(
-                  "${ApiUtils.firstName} ${ApiUtils.lastName}",
-                  style: AppTextTheme.appBarStyle,
-                ),
-                const SizedBox(height: 20,),
-                Row(
-                  children: [
-                    Expanded(child: CustomText(text: "Room No - ${ApiUtils.roomNo}")),
-                    const SizedBox(width: 25,),
-                    Expanded(child: CustomText(text: "Block No - ${ApiUtils.blockNo}")),
-                  ],
-                ),
-                const SizedBox(height: 15,),
-                CustomText(text: ApiUtils.email,),
-                const SizedBox(height: 15,),
-                CustomTextField(
-                  controller: nameController,
-                  inputHint: ApiUtils.userName,
-                  prefixIcon: const Icon(Icons.person_outline),
-                ),
-                const SizedBox(height: 15,),
-                CustomTextField(
-                  controller: phoneController,
-                  inputHint: ApiUtils.phoneNo,
-                  prefixIcon: const Icon(Icons.phone_outlined),
-                ),
-                const SizedBox(height: 15,),
-                Row(
-                  children: [
-                    Expanded(
-                      child: CustomTextField(
-                        controller: firstNameController,
-                        inputHint: ApiUtils.firstName,
-                      ),
+            : SingleChildScrollView(
+              child: Column(
+                children: [
+                  Center(
+                    child: Image.asset(
+                      ImagePaths.person,
+                      width: w/2.8,
                     ),
-                    const SizedBox(width: 20,),
-                    Expanded(
-                      child: CustomTextField(
-                        controller: lastNameController,
-                        inputHint: ApiUtils.lastName,
+                  ),
+                  const SizedBox(height: 10,),
+                  Text(
+                    "${ApiUtils.firstName} ${ApiUtils.lastName}",
+                    style: AppTextTheme.appBarStyle,
+                  ),
+                  const SizedBox(height: 20,),
+                  Row(
+                    children: [
+                      Expanded(child: CustomText(text: "Room No - ${ApiUtils.roomNo}")),
+                      const SizedBox(width: 25,),
+                      Expanded(child: CustomText(text: "Block No - ${ApiUtils.blockNo}")),
+                    ],
+                  ),
+                  const SizedBox(height: 15,),
+                  CustomText(text: ApiUtils.email,),
+                  const SizedBox(height: 15,),
+                  CustomTextField(
+                    controller: nameController,
+                    inputHint: ApiUtils.userName,
+                    prefixIcon: const Icon(Icons.person_outline),
+                  ),
+                  const SizedBox(height: 15,),
+                  CustomTextField(
+                    controller: phoneController,
+                    inputHint: ApiUtils.phoneNo,
+                    prefixIcon: const Icon(Icons.phone_outlined),
+                  ),
+                  const SizedBox(height: 15,),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: CustomTextField(
+                          controller: firstNameController,
+                          inputHint: ApiUtils.firstName,
+                        ),
                       ),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 40,),
-                CustomButton(
-                    buttonText: "Save",
-                    onTap: () {}
-                )
-              ],
-        ),
+                      const SizedBox(width: 20,),
+                      Expanded(
+                        child: CustomTextField(
+                          controller: lastNameController,
+                          inputHint: ApiUtils.lastName,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 40,),
+                  CustomButton(
+                      buttonText: "Save",
+                      onTap: () {}
+                  )
+                ],
+                      ),
+            ),
       ),
     );
   }

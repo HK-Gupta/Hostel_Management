@@ -33,6 +33,22 @@ class _StaffDisplayScreenState extends State<StaffDisplayScreen> {
     }
   }
 
+  bool isLoading = false;
+  Future<void> deleteStaff(final staffs) async {
+    setState(() {
+      isLoading = true;
+    });
+    await ApiCalls().deleteFromDatabase(
+        context,
+        ApiUtils.createStaff,
+        staffs.id.toString(),
+        "Deleted Successfully"
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +91,7 @@ class _StaffDisplayScreenState extends State<StaffDisplayScreen> {
                           decoration: const ShapeDecoration(
                               shape: RoundedRectangleBorder(
                                   side: BorderSide(
-                                      color: AppColors.greenColor,
+                                      color: AppColors.primaryColor,
                                       width: 2
                                   ),
                                   borderRadius: BorderRadius.only(
@@ -143,18 +159,14 @@ class _StaffDisplayScreenState extends State<StaffDisplayScreen> {
                                       color: Colors.red[400],
                                       borderRadius: BorderRadius.circular(10)
                                   ),
-                                  child: Row(
+                                  child: isLoading? const Center(child: CircularProgressIndicator()):
+                                  Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          ApiCalls().deleteFromDatabase(
-                                              context,
-                                              ApiUtils.createStaff,
-                                              staffs.id.toString(),
-                                              "Deleted Successfully"
-                                          );
+                                          deleteStaff(staffs);
                                         },
                                         child: Text(
                                           "Delete Staff",

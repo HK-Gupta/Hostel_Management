@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hostel_management/api_services/api_calls.dart';
 import 'package:hostel_management/api_services/api_utils.dart';
 import 'package:hostel_management/models/ChangeRoomModel.dart';
+import 'package:hostel_management/theme/colors.dart';
 import 'package:provider/provider.dart';
 import '../../api_services/api_provider.dart';
 import '../../common/app_bar.dart';
@@ -18,6 +19,21 @@ class RoomChangeRequestScreen extends StatefulWidget {
 
 class _RoomChangeRequestScreenState extends State<RoomChangeRequestScreen> {
   List<ChangeRoomModel>? changeRoomModel;
+  bool isLoading = false;
+  Future<void> roomChangeRequest(final changeRoomModel, String message) async {
+    setState(() {
+      isLoading = true;
+    });
+    await ApiCalls().deleteFromDatabase(
+        context,
+        ApiUtils.changeRequest,
+        changeRoomModel.id ?? 'N/A',
+        message
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   void initState() {
@@ -87,7 +103,11 @@ class _RoomChangeRequestScreenState extends State<RoomChangeRequestScreen> {
           : ListView.builder(
         itemCount: changeRoomModel?.length ?? 0,
         itemBuilder: (context, index) {
-          return RequestCard(changeRoomModel: changeRoomModel![index]);
+          return RequestCard(
+              changeRoomModel: changeRoomModel![index],
+            isLoading: isLoading,
+            roomChangeRequest: roomChangeRequest,
+          );
         },
       ),
     );
@@ -96,7 +116,10 @@ class _RoomChangeRequestScreenState extends State<RoomChangeRequestScreen> {
 
 class RequestCard extends StatelessWidget {
   final ChangeRoomModel changeRoomModel;
-  const RequestCard({super.key, required this.changeRoomModel});
+  final bool isLoading;
+  final Future<void> Function(ChangeRoomModel changeRoomModel, String message) roomChangeRequest;
+
+  const RequestCard({super.key, required this.changeRoomModel, required this.isLoading, required this.roomChangeRequest});
 
   @override
   Widget build(BuildContext context) {
@@ -117,8 +140,8 @@ class RequestCard extends StatelessWidget {
                 begin: const Alignment(0, -1),
                 end: const Alignment(0, 1),
                 colors: [
-                  const Color(0xff2e8b57).withOpacity(0.5),
-                  const Color(0x002e8857),
+                  AppColors.lightBlue.withOpacity(0.5),
+                  AppColors.lightBlue.withOpacity(0.01),
                 ],
               ),
             ),
@@ -231,63 +254,49 @@ class RequestCard extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(height: 20),
+                        isLoading? const Center(child: CircularProgressIndicator()):
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            InkWell(
-                              onTap: () {
-                                // Handle reject action
-                              },
-                              child: Material(
-                                borderRadius: BorderRadius.circular(10),
-                                elevation: 4,
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  decoration: BoxDecoration(
-                                    color: Colors.red[400],
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  child: Center(
-                                    child: InkWell(
-                                      onTap: () {
-                                        ApiCalls().deleteFromDatabase(
-                                            context,
-                                            ApiUtils.changeRequest,
-                                            changeRoomModel.id ?? 'N/A',
-                                            "Request Rejected"
-                                        );
-                                      },
-                                      child: Text(
-                                        "Reject",
-                                        style: AppTextTheme.labelStyle.copyWith(
-                                          color: Colors.white,
-                                        ),
+                            Material(
+                              borderRadius: BorderRadius.circular(10),
+                              elevation: 4,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                width: MediaQuery.of(context).size.width / 3,
+                                decoration: BoxDecoration(
+                                  color: Colors.red[400],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Center(
+                                  child: InkWell(
+                                    onTap: () {
+                                      roomChangeRequest(changeRoomModel, "Request Rejected");
+                                    },
+                                    child: Text(
+                                      "Reject",
+                                      style: AppTextTheme.labelStyle.copyWith(
+                                        color: Colors.white,
                                       ),
                                     ),
                                   ),
                                 ),
                               ),
                             ),
-                            InkWell(
-                              onTap: () {
-                                ApiCalls().deleteFromDatabase(
-                                    context,
-                                    ApiUtils.changeRequest,
-                                    changeRoomModel.id ?? 'N/A',
-                                    "Request Approved"
-                                );
-                              },
-                              child: Material(
-                                borderRadius: BorderRadius.circular(10),
-                                elevation: 4,
-                                child: Container(
-                                  padding: const EdgeInsets.all(10),
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  decoration: BoxDecoration(
-                                    color: Colors.green[400],
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                            Material(
+                              borderRadius: BorderRadius.circular(10),
+                              elevation: 4,
+                              child: Container(
+                                padding: const EdgeInsets.all(10),
+                                width: MediaQuery.of(context).size.width / 3,
+                                decoration: BoxDecoration(
+                                  color: Colors.green[400],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: InkWell(
+                                  onTap: () {
+                                    roomChangeRequest(changeRoomModel, "Request Accepted");
+                                  },
                                   child: Center(
                                     child: Text(
                                       "Approve",

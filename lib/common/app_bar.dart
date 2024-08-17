@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 
 AppBar buildAppBar(BuildContext context, String? title, bool isAvatar) {
   return AppBar(
-    backgroundColor: AppColors.greenColor,
+    backgroundColor: AppColors.appBarColor,
     centerTitle: false,
     leading: InkWell(
       onTap: () {

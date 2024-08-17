@@ -29,6 +29,27 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
   TextEditingController jobRoleController = TextEditingController();
   ApiCalls apiCalls = ApiCalls();
 
+
+  bool isLoading = false;
+  Future<void> createStaff() async {
+    setState(() {
+      isLoading = true;
+    });
+    await apiCalls.createStaff(
+        context,
+        userNameController.text,
+        firstNameController.text,
+        lastNameController.text,
+        jobRoleController.text,
+        phoneNumberController.text,
+        emailController.text,
+        passwordController.text
+    );
+    setState(() {
+      isLoading = false;
+    });
+  }
+
   @override
   void dispose() {
     emailController.dispose();
@@ -206,21 +227,13 @@ class _CreateStaffScreenState extends State<CreateStaffScreen> {
               ),
               // Register Button.
               const SizedBox(height: 25,),
+              isLoading? const Center(child: CircularProgressIndicator()):
               CustomButton(
                   buttonText: "Create Staff",
                   buttonColor: AppColors.light,
                   onTap: () {
                     if(formKey.currentState!.validate()) {
-                      apiCalls.createStaff(
-                        context,
-                        userNameController.text,
-                        firstNameController.text,
-                        lastNameController.text,
-                        jobRoleController.text,
-                        phoneNumberController.text,
-                        emailController.text,
-                        passwordController.text
-                      );
+                      createStaff();
                     }
                   }
               ),
